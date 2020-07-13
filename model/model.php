@@ -87,8 +87,12 @@ class Model{
     return( $this->sth->fetch(PDO::FETCH_ASSOC) );
   }
 
-  function fetchAll(){
+  function fetchAllColumn(){
     return ( $this->sth->fetchAll(PDO::FETCH_COLUMN) );
+  }
+
+  function fetchAll(){
+    return ( $this->sth->fetchAll(PDO::FETCH_ASSOC) );
   }
 
   /**

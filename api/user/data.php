@@ -13,6 +13,7 @@
 //-------------------------------------------------
 require_once("../util.php");
 require_once("../../model/user.php");
+require_once("../../model/chara.php");
 
 //-------------------------------------------------
 // 引数を受け取る
@@ -29,14 +30,17 @@ if( !$token ){
 //-------------------------------------------------
 try{
   $user = new UserModel();
+  $chara = new CharaModel();
   $uid  = $user->getUserIdByToken($token);
   if( $uid !== false ){
     $record = $user->getRecordById($uid);
     $chara_id = $user->getChara($uid);
+    $chara_name = $chara->getCharaName();
   }
   else{
     $record = false;
     $chara_id = false;
+    $chara_name = false;
   }
 }
 catch( PDOException $e ) {
@@ -48,13 +52,19 @@ catch( PDOException $e ) {
 // 実行結果を返却
 //-------------------------------------------------
 // データが0件
-if( $record === false || $chara_id === false ){
+if( $record === false ){
   sendResponse(false, 'Not Found user');
 }
 // データを正常に取得
 else{
+
   $result = $record;
-  $result['chara'] = $chara_id;
+
+  $user_chara = array_filter($chara_name, function($element) use ($chara_id){
+    return in_array($element['id'], $chara_id);
+  });
+
+  $result['chara'] = $user_chara;
+
   sendResponse(true, $result);
 }
-

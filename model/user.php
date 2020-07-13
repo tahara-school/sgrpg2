@@ -138,7 +138,7 @@ class UserModel extends Model{
      ];
 
      $this->query($sql, $bind);
-     return($this->fetchAll());
+     return($this->fetchAllColumn());
   }
 
   /**

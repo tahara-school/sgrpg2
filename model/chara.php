@@ -9,4 +9,11 @@ require_once('model.php');
  */
 class CharaModel extends Model{
   protected $tableName = 'Chara';  // 対象テーブル
+
+  function getCharaName(){
+    $sql  = 'SELECT * FROM Chara';
+
+    $this->query($sql);
+    return( $this->fetchAll() );
+  }
 }
