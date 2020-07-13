@@ -31,10 +31,12 @@ try{
   $user = new UserModel();
   $uid  = $user->getUserIdByToken($token);
   if( $uid !== false ){
-    $buff = $user->getRecordById($uid);
+    $record = $user->getRecordById($uid);
+    $chara_id = $user->getChara($uid);
   }
   else{
-    $buff = false;
+    $record = false;
+    $chara_id = false;
   }
 }
 catch( PDOException $e ) {
@@ -46,11 +48,13 @@ catch( PDOException $e ) {
 // 実行結果を返却
 //-------------------------------------------------
 // データが0件
-if( $buff === false ){
+if( $record === false || $chara_id === false ){
   sendResponse(false, 'Not Found user');
 }
 // データを正常に取得
 else{
-  sendResponse(true, $buff);
+  $result = $record;
+  $result['chara'] = $chara_id;
+  sendResponse(true, $result);
 }
 

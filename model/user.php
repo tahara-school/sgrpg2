@@ -130,6 +130,16 @@ class UserModel extends Model{
 
     return( $this->query($sql, $bind) );
   }
+  
+  function getChara($uid){
+    $sql = 'SELECT DISTINCT chara_id from UserChara WHERE user_id=:userid';
+    $bind = [
+    	['name'=>':userid', 'value'=>$uid,   'type'=>PDO::PARAM_INT]
+     ];
+
+     $this->query($sql, $bind);
+     return($this->fetchAll());
+  }
 
   /**
    * キャラクターを所有する
